@@ -67,6 +67,9 @@ async function saveData(data) {
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+// Railway / Render / Heroku put us behind an HTTPS proxy — we must trust it
+// so that secure cookies work and req.secure reflects the real scheme.
+app.set('trust proxy', 1);
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 app.use(express.json({ limit: '2mb' }));
 app.use('/public', express.static(path.join(__dirname, 'public')));
