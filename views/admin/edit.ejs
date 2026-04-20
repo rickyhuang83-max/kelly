@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title><%= isNew ? '新增 Outfit' : '編輯 ' + (outfit.titleEn || outfit.id) %> — KELLY LIN Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Noto+Serif+TC:wght@300;400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/public/style.css" />
+</head>
+<body class="admin-body">
+<div class="admin-wrap">
+
+  <div class="admin-header">
+    <h1><%= isNew ? '新增 Outfit' : '編輯 Outfit № ' + outfit.numLabel %></h1>
+    <div class="actions">
+      <a href="/admin/dashboard">← 回列表</a>
+      <% if (!isNew) { %>
+        <a href="/outfit/<%= outfit.id %>" target="_blank">前台預覽 ↗</a>
+      <% } %>
+    </div>
+  </div>
+
+  <form class="edit-form" method="POST"
+        action="<%= isNew ? '/admin/outfit/new' : '/admin/outfit/' + outfit.id %>">
+
+    <h2>作品資料</h2>
+
+    <div class="row">
+      <label>編號 ID</label>
+      <div>
+        <% if (isNew) { %>
+          <input type="text" name="id" value="<%= outfit.id %>" required
+                 placeholder="例：18（用於網址 /outfit/18，建立後無法修改）" />
+        <% } else { %>
+          <input type="text" value="<%= outfit.id %>" disabled
+                 style="color:#8a7e6e; background:#efe5d7;" />
+        <% } %>
+      </div>
+    </div>
+
+    <div class="row">
+      <label>顯示編號 Num Label</label>
+      <input type="text" name="numLabel" value="<%= outfit.numLabel %>" placeholder="例：01、02、18" />
+    </div>
+
+    <div class="row">
+      <label>排序 Order</label>
+      <input type="number" name="order" value="<%= outfit.order %>" placeholder="數字越小越前面（也可直接在列表頁拖曳）" />
+    </div>
+
+    <div class="row">
+      <label>顯示 / 隱藏</label>
+      <div>
+        <label style="text-transform:none; letter-spacing:normal; color:#2a2724; font-size:14px;">
+          <input type="checkbox" name="visible" <%= outfit.visible ? 'checked' : '' %> />
+          在首頁與 Lookbook 顯示
+        </label>
+      </div>
+    </div>
+
+    <div class="row">
+      <label>英文名 Title EN</label>
+      <input type="text" name="titleEn" value="<%= outfit.titleEn %>" placeholder="例：Grey Pinstripe Suit" />
+    </div>
+
+    <div class="row">
+      <label>中文名 Title ZH</label>
+      <input type="text" name="titleZh" value="<%= outfit.titleZh %>" placeholder="例：灰色條紋雙排扣西裝洋裝" />
+    </div>
+
+    <div class="row">
+      <label>款式 Style</label>
+      <input type="text" name="style" value="<%= outfit.style %>" placeholder="款式說明（留空會使用中文名）" />
+    </div>
+
+    <div class="row">
+      <label>編號 Item No.</label>
+      <input type="text" name="itemNo" value="<%= outfit.itemNo %>" placeholder="例：KL-2026-01" />
+    </div>
+
+    <div class="row">
+      <label>尺寸 Size</label>
+      <input type="text" name="size" value="<%= outfit.size %>" placeholder="例：肩 38 / 胸 88 / 長 95" />
+    </div>
+
+    <div class="row">
+      <label>材質 Fabric</label>
+      <input type="text" name="fabric" value="<%= outfit.fabric %>" placeholder="例：羊毛混紡 85% / 聚酯纖維 15%" />
+    </div>
+
+    <div class="row">
+      <label>價格 Price</label>
+      <input type="text" name="price" value="<%= outfit.price %>" placeholder="例：NT$ 4,800 或 私訊洽詢" />
+    </div>
+
+    <div class="row">
+      <label>款式說明 Description</label>
+      <textarea name="description" placeholder="細節描述、靈感、穿搭建議…"><%= outfit.description %></textarea>
+    </div>
+
+    <div class="submit-row">
+      <button type="submit"><%= isNew ? '建立 Outfit' : '儲存變更' %></button>
+      <a href="/admin/dashboard" class="cancel">取消</a>
+    </div>
+  </form>
+
+  <% if (!isNew) { %>
+  <div class="edit-form" style="margin-top:28px;">
+    <h2>照片管理</h2>
+    <p style="font-size:12px; color:#8a7e6e; letter-spacing:1px; margin-bottom:14px;">
+      拖曳下方縮圖可調整前台顯示順序，第一張會作為封面。
+    </p>
+
+    <div class="photo-grid" id="photo-grid">
+      <% (outfit.photos || []).forEach((p) => { %>
+        <div class="photo-item" data-name="<%= p %>" draggable="true">
+          <form method="POST" action="/admin/outfit/<%= outfit.id %>/photos/remove" style="margin:0;"
+                onsubmit="return confirm('從這套移除這張照片？（檔案本身不會刪除）');">
+            <input type="hidden" name="name" value="<%= p %>" />
+            <button type="submit" class="remove" title="移除">×</button>
+          </form>
+          <img src="/photos/<%= p %>" alt="<%= p %>" loading="lazy" />
+          <div class="name"><%= p %></div>
+        </div>
+      <% }) %>
+    </div>
+
+    <% if (!(outfit.photos || []).length) { %>
+      <div style="padding:20px; text-align:center; color:#8a7e6e; font-size:13px; background:#fff9f0; border:1px dashed #cdbfae;">
+        這套還沒有照片，請在下方上傳。
+      </div>
+    <% } %>
+
+    <div class="upload-box">
+      <form method="POST" action="/admin/outfit/<%= outfit.id %>/photos" enctype="multipart/form-data">
+        <div style="font-size:12px; color:#8a7e6e; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">
+          上傳新照片
+        </div>
+        <input type="file" name="photos" accept="image/jpeg,image/png,image/webp" multiple required />
+        <br/>
+        <button type="submit">上傳</button>
+        <div style="margin-top:8px; font-size:11px; color:#8a7e6e;">
+          支援 JPEG / PNG / WebP，每張最大 15MB，可一次選多張。
+        </div>
+      </form>
+    </div>
+
+    <% const libRest = (allPhotos || []).filter(p => !(outfit.photos || []).includes(p)); %>
+    <% if (libRest.length) { %>
+    <div class="library">
+      <h4>從圖庫加入已上傳過的照片 &nbsp;·&nbsp; <%= libRest.length %> 張可用</h4>
+      <div class="grid">
+        <% libRest.forEach((p) => { %>
+          <form method="POST" action="/admin/outfit/<%= outfit.id %>/photos/attach">
+            <input type="hidden" name="name" value="<%= p %>" />
+            <button type="submit" title="加入「<%= p %>」">
+              <img src="/photos/<%= p %>" alt="<%= p %>" loading="lazy" />
+            </button>
+          </form>
+        <% }) %>
+      </div>
+    </div>
+    <% } %>
+  </div>
+  <% } else { %>
+    <div style="margin-top:20px; padding:18px 22px; background:#fff9f0; border:1px solid #e5dccb; color:#5a5247; font-size:13px;">
+      💡 先建立 outfit 資料後，再進入編輯頁面上傳照片。
+    </div>
+  <% } %>
+
+</div>
+
+<% if (!isNew) { %>
+<script>
+  // drag-and-drop photo reorder
+  (function () {
+    const grid = document.getElementById('photo-grid');
+    if (!grid) return;
+    let dragEl = null;
+
+    function saveOrder() {
+      const names = [...grid.querySelectorAll('.photo-item')].map(el => el.dataset.name);
+      fetch('/admin/outfit/<%= outfit.id %>/photos/reorder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ order: names }),
+      }).then(r => r.json()).then(() => {
+        grid.style.transition = 'background 0.3s';
+        grid.style.background = '#f9f1e4';
+        setTimeout(() => { grid.style.background = ''; }, 300);
+      });
+    }
+
+    grid.querySelectorAll('.photo-item').forEach(item => {
+      item.addEventListener('dragstart', (e) => {
+        dragEl = item;
+        item.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      item.addEventListener('dragend', () => {
+        if (dragEl) dragEl.classList.remove('dragging');
+        dragEl = null;
+        saveOrder();
+      });
+      item.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (!dragEl || dragEl === item) return;
+        const rect = item.getBoundingClientRect();
+        const after = (e.clientX - rect.left) / rect.width > 0.5;
+        item.parentNode.insertBefore(dragEl, after ? item.nextSibling : item);
+      });
+    });
+  })();
+</script>
+<% } %>
+</body>
+</html>

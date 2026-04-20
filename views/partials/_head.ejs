@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'KELLY LIN — 2026 S/S Collection' %></title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+TC:wght@300;400&family=Inter:wght@300;400&family=Great+Vibes&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/public/style.css" />
+</head>
+<body>
+<nav class="nav">
+  <div class="brand">KELLY LIN</div>
+  <ul>
+    <li><a href="/" <%= typeof navActive !== 'undefined' && navActive === 'home' ? 'class="active"' : '' %>>Home</a></li>
+    <li><a href="/lookbook" <%= typeof navActive !== 'undefined' && navActive === 'lookbook' ? 'class="active"' : '' %>>Lookbook</a></li>
+    <li><a href="https://www.facebook.com/kai.li.lin.198419" target="_blank">Contact</a></li>
+    <% if (isAdmin) { %><li><a href="/admin/dashboard" style="color:#7d3535">Admin</a></li><% } %>
+  </ul>
+</nav>

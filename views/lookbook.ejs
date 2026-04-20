@@ -1,0 +1,20 @@
+<%- include('partials/_head', { pageTitle: 'Lookbook — KELLY LIN', navActive: 'lookbook' }) %>
+
+<section class="lookbook">
+  <div class="lookbook-title">
+    <h1>Lookbook</h1>
+    <p>KELLY LIN · 2026 S/S</p>
+  </div>
+  <div class="lookbook-grid">
+    <% outfits.forEach((o) => { %>
+      <% (o.photos || []).forEach((p, i) => { %>
+        <a href="/outfit/<%= o.id %>" class="cell">
+          <img src="/photos/<%= p %>" alt="<%= o.titleEn %>" loading="lazy" />
+          <div class="cap">№ <%= o.numLabel %> · <%= o.titleEn %></div>
+        </a>
+      <% }) %>
+    <% }) %>
+  </div>
+</section>
+
+<%- include('partials/_footer') %>

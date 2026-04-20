@@ -1,0 +1,311 @@
+{
+  "version": 1,
+  "outfits": [
+    {
+      "id": "01",
+      "order": 1,
+      "visible": true,
+      "numLabel": "01",
+      "titleEn": "Grey Pinstripe Suit",
+      "titleZh": "灰色條紋雙排扣西裝洋裝",
+      "style": "灰色條紋雙排扣西裝洋裝",
+      "itemNo": "KL-2026-01",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "修身雙排扣、腰側鏤空設計，帥氣又帶點女人味。早晨通勤到晚間小酌都能搭配。",
+      "photos": [
+        "600916_0.jpg",
+        "600917_0.jpg",
+        "600918_0.jpg"
+      ]
+    },
+    {
+      "id": "02",
+      "order": 2,
+      "visible": true,
+      "numLabel": "02",
+      "titleEn": "Soft Noir Blouse",
+      "titleZh": "黑色絲緞排扣上衣",
+      "style": "黑色絲緞排扣上衣",
+      "itemNo": "KL-2026-02",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "柔軟的黑色絲緞，復古雙排扣剪裁，極簡又有質感。",
+      "photos": [
+        "600919_0.jpg"
+      ]
+    },
+    {
+      "id": "03",
+      "order": 3,
+      "visible": true,
+      "numLabel": "03",
+      "titleEn": "Sheer Duster & White",
+      "titleZh": "黑色透視長背心 × 白色短裙",
+      "style": "黑色透視長背心 × 白色短裙",
+      "itemNo": "KL-2026-03",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "輕盈透膚的長背心外搭，內搭白色合身短裙，黑白對比俐落。",
+      "photos": [
+        "600920_0.jpg",
+        "600921_0.jpg"
+      ]
+    },
+    {
+      "id": "04",
+      "order": 4,
+      "visible": true,
+      "numLabel": "04",
+      "titleEn": "Lace Yoke Jumpsuit",
+      "titleZh": "黑色蕾絲領寬褲連身裝",
+      "style": "黑色蕾絲領寬褲連身裝",
+      "itemNo": "KL-2026-04",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "立領蕾絲上身 + 垂墜寬褲，一套完成俐落與優雅。",
+      "photos": [
+        "600922_0.jpg",
+        "600923_0.jpg"
+      ]
+    },
+    {
+      "id": "05",
+      "order": 5,
+      "visible": true,
+      "numLabel": "05",
+      "titleEn": "White Lace Sundress",
+      "titleZh": "白色蕾絲流蘇露肩洋裝",
+      "style": "白色蕾絲流蘇露肩洋裝",
+      "itemNo": "KL-2026-05",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "細肩帶搭配流蘇蕾絲領片，輕甜俏皮又不失優雅。",
+      "photos": [
+        "600924_0.jpg",
+        "600925_0.jpg",
+        "600926_0.jpg"
+      ]
+    },
+    {
+      "id": "06",
+      "order": 6,
+      "visible": true,
+      "numLabel": "06",
+      "titleEn": "Lace Bustier Tulle",
+      "titleZh": "白色蕾絲紗裙洋裝",
+      "style": "白色蕾絲紗裙洋裝",
+      "itemNo": "KL-2026-06",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "蕾絲馬甲拼接透紗長袖，百褶紗裙輕盈飄逸。",
+      "photos": [
+        "600927_0.jpg",
+        "600928_0.jpg"
+      ]
+    },
+    {
+      "id": "07",
+      "order": 7,
+      "visible": true,
+      "numLabel": "07",
+      "titleEn": "One-Shoulder Blazer",
+      "titleZh": "黑色單肩西裝短洋裝",
+      "style": "黑色單肩西裝短洋裝",
+      "itemNo": "KL-2026-07",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "不對稱單肩設計，西裝版型修飾線條，派對與酒會的首選。",
+      "photos": [
+        "600929_0.jpg",
+        "600930_0.jpg",
+        "600931_0.jpg"
+      ]
+    },
+    {
+      "id": "08",
+      "order": 8,
+      "visible": true,
+      "numLabel": "08",
+      "titleEn": "Ruched Asymmetric",
+      "titleZh": "黑色單肩抓皺短洋裝",
+      "style": "黑色單肩抓皺短洋裝",
+      "itemNo": "KL-2026-08",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "斜肩 + 側邊抽皺細節，顯瘦顯身形。",
+      "photos": [
+        "600932_0.jpg"
+      ]
+    },
+    {
+      "id": "09",
+      "order": 9,
+      "visible": true,
+      "numLabel": "09",
+      "titleEn": "Slit Gown",
+      "titleZh": "黑色不對稱高衩晚禮服",
+      "style": "黑色不對稱高衩晚禮服",
+      "itemNo": "KL-2026-09",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "不對稱領口，大腿開衩俐落修長。",
+      "photos": [
+        "600933_0.jpg"
+      ]
+    },
+    {
+      "id": "10",
+      "order": 10,
+      "visible": true,
+      "numLabel": "10",
+      "titleEn": "Lace V-Neck",
+      "titleZh": "黑色蕾絲深V禮服",
+      "style": "黑色蕾絲深V禮服",
+      "itemNo": "KL-2026-10",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "深V蕾絲拼接，細節精緻耐看。",
+      "photos": [
+        "600934_0.jpg"
+      ]
+    },
+    {
+      "id": "11",
+      "order": 11,
+      "visible": true,
+      "numLabel": "11",
+      "titleEn": "Silver Embellished",
+      "titleZh": "黑色銀飾高衩晚禮服",
+      "style": "黑色銀飾高衩晚禮服",
+      "itemNo": "KL-2026-11",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "銀色刺繡上身 + 高衩長裙，晚宴場合的焦點。",
+      "photos": [
+        "600935_0.jpg"
+      ]
+    },
+    {
+      "id": "12",
+      "order": 12,
+      "visible": true,
+      "numLabel": "12",
+      "titleEn": "Lace Corset Mini",
+      "titleZh": "黑色蕾絲馬甲短洋裝",
+      "style": "黑色蕾絲馬甲短洋裝",
+      "itemNo": "KL-2026-12",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "蕾絲馬甲拼接短洋裝，露肩設計女人味十足。",
+      "photos": [
+        "600936_0.jpg",
+        "600937_0.jpg"
+      ]
+    },
+    {
+      "id": "13",
+      "order": 13,
+      "visible": true,
+      "numLabel": "13",
+      "titleEn": "Halter Lace Gown",
+      "titleZh": "黑色深V露背蕾絲長禮服",
+      "style": "黑色深V露背蕾絲長禮服",
+      "itemNo": "KL-2026-13",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "深V掛頸 + 背部鏤空 + 高衩蕾絲下襬，性感又有態度。",
+      "photos": [
+        "600938_0.jpg",
+        "600939_0.jpg",
+        "600942_0.jpg"
+      ]
+    },
+    {
+      "id": "14",
+      "order": 14,
+      "visible": true,
+      "numLabel": "14",
+      "titleEn": "Two-Tone V-Neck",
+      "titleZh": "灰紫色拼接深V短洋裝",
+      "style": "灰紫色拼接深V短洋裝",
+      "itemNo": "KL-2026-14",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "灰紫與黑色拼接，不對稱剪裁修飾腰線。",
+      "photos": [
+        "600940_0.jpg",
+        "600941_0.jpg"
+      ]
+    },
+    {
+      "id": "15",
+      "order": 15,
+      "visible": true,
+      "numLabel": "15",
+      "titleEn": "Blue Crochet Gown",
+      "titleZh": "藍蕾絲胸衣黑紗魚尾禮服",
+      "style": "藍蕾絲胸衣黑紗魚尾禮服",
+      "itemNo": "KL-2026-15",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "藍色幾何蕾絲胸衣 + 黑紗魚尾裙擺，優雅又帶有藝術感。",
+      "photos": [
+        "600943_0.jpg",
+        "600944_0.jpg",
+        "600945_0.jpg"
+      ]
+    },
+    {
+      "id": "16",
+      "order": 16,
+      "visible": true,
+      "numLabel": "16",
+      "titleEn": "Matcha Satin Ruched",
+      "titleZh": "抹茶綠抽皺高衩連身裙",
+      "style": "抹茶綠抽皺高衩連身裙",
+      "itemNo": "KL-2026-16",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "緞面抹茶綠，抽皺收腰 + 前開衩，修長又女人味。",
+      "photos": [
+        "600946_0.jpg",
+        "600947_0.jpg"
+      ]
+    },
+    {
+      "id": "17",
+      "order": 17,
+      "visible": true,
+      "numLabel": "17",
+      "titleEn": "Ruby Ruffle Gown",
+      "titleZh": "酒紅荷葉露肩魚尾禮服",
+      "style": "酒紅荷葉露肩魚尾禮服",
+      "itemNo": "KL-2026-17",
+      "size": "請填入尺寸資料（例：S / M / L 或 胸圍 XX / 腰圍 XX）",
+      "fabric": "請填入材質資料",
+      "price": "請填入價格或註記「私訊洽詢」",
+      "description": "酒紅色緞面 + 立體荷葉肩片 + 高衩魚尾，宴會的經典款。",
+      "photos": [
+        "600948_0.jpg",
+        "600949_0.jpg"
+      ]
+    }
+  ]
+}

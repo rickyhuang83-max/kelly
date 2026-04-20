@@ -1,0 +1,98 @@
+<%- include('partials/_head', { pageTitle: 'KELLY LIN — ' + outfit.titleEn + ' / ' + outfit.titleZh }) %>
+
+<section class="head-strip">
+  <div class="num"><%= outfit.numLabel %></div>
+  <div class="title-block">
+    <div class="eyebrow">KELLY LIN · 2026 S/S</div>
+    <h1><%= outfit.titleEn %></h1>
+    <div class="zh"><%= outfit.titleZh %></div>
+  </div>
+  <div class="side">Outfit № <%= outfit.numLabel %></div>
+</section>
+
+<section class="main">
+  <div class="gallery <%= outfit.photos.length === 1 ? 'single' : '' %>">
+    <% outfit.photos.forEach((p, i) => { %>
+      <div class="cell" onclick="openLightbox(<%= i %>)">
+        <img src="/photos/<%= p %>" alt="<%= outfit.titleEn %> · <%= i+1 %>" loading="lazy" />
+        <div class="cap"><%= outfit.titleEn %> · <%= i+1 %></div>
+      </div>
+    <% }) %>
+  </div>
+
+  <aside class="desc-panel">
+    <div class="eyebrow">Item details</div>
+    <h2><%= outfit.titleEn %></h2>
+    <div class="divider"></div>
+
+    <div class="label">款式名稱 / Style</div>
+    <div class="value"><%= outfit.style || outfit.titleZh %></div>
+
+    <% if (outfit.itemNo) { %>
+      <div class="label">編號 / Item No.</div>
+      <div class="value"><%= outfit.itemNo %></div>
+    <% } %>
+
+    <div class="label">尺寸 / Size</div>
+    <div class="value"><%= outfit.size %></div>
+
+    <div class="label">材質 / Fabric</div>
+    <div class="value"><%= outfit.fabric %></div>
+
+    <div class="label">價格 / Price</div>
+    <div class="value"><%= outfit.price %></div>
+
+    <div class="label">款式說明 / Description</div>
+    <div class="value long"><%= outfit.description %></div>
+
+    <a href="https://www.facebook.com/kai.li.lin.198419" target="_blank" class="contact-btn">私訊詢問這件</a>
+  </aside>
+</section>
+
+<div class="back-bar">
+  <a href="/">← 回到全部作品</a>
+  <a href="/outfit/<%= prev.id %>">← Outfit № <%= prev.numLabel %></a>
+  <a href="/outfit/<%= next.id %>">Outfit № <%= next.numLabel %> →</a>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="close" onclick="closeLightbox()">×</button>
+  <button class="nav-btn prev" onclick="navLightbox(-1)">‹</button>
+  <img id="lightbox-img" src="" alt="" />
+  <button class="nav-btn next" onclick="navLightbox(1)">›</button>
+  <div class="counter" id="lightbox-counter"></div>
+</div>
+
+<script>
+  const IMAGES = <%- JSON.stringify(outfit.photos.map(p => '/photos/' + p)) %>;
+  let currentIdx = 0;
+  function openLightbox(idx) {
+    currentIdx = idx;
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightbox-img').src = IMAGES[idx];
+    document.getElementById('lightbox-counter').textContent = (idx+1) + ' / ' + IMAGES.length;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function navLightbox(delta) {
+    currentIdx = (currentIdx + delta + IMAGES.length) % IMAGES.length;
+    document.getElementById('lightbox-img').src = IMAGES[currentIdx];
+    document.getElementById('lightbox-counter').textContent = (currentIdx+1) + ' / ' + IMAGES.length;
+  }
+  document.getElementById('lightbox').addEventListener('click', (e) => {
+    if (e.target.id === 'lightbox') closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    const lb = document.getElementById('lightbox');
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft')  navLightbox(-1);
+    if (e.key === 'ArrowRight') navLightbox(1);
+  });
+</script>
+
+<%- include('partials/_footer') %>

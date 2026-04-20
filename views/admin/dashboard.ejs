@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Dashboard — KELLY LIN</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Noto+Serif+TC:wght@300;400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/public/style.css" />
+</head>
+<body class="admin-body">
+<div class="admin-wrap">
+
+  <div class="admin-header">
+    <h1>KELLY LIN · Admin</h1>
+    <div class="actions">
+      <a href="/" target="_blank">查看網站 ↗</a>
+      <a href="/admin/outfit/new">+ 新增 Outfit</a>
+      <form method="POST" action="/admin/logout" style="margin:0;">
+        <button type="submit">登出</button>
+      </form>
+    </div>
+  </div>
+
+  <% if (flash && flash.success) { %>
+    <div class="flash"><%= flash.success %></div>
+  <% } %>
+  <% if (flash && flash.error) { %>
+    <div class="flash error"><%= flash.error %></div>
+  <% } %>
+
+  <p style="font-size:12px; color:#8a7e6e; letter-spacing:2px; margin-bottom:18px; text-transform:uppercase;">
+    拖曳左側 ⠿ 可調整首頁與 Lookbook 的顯示順序 &nbsp;·&nbsp; 共 <%= outfits.length %> 套作品
+  </p>
+
+  <div class="outfit-list" id="outfit-list">
+    <% outfits.forEach((o) => { %>
+      <div class="outfit-row <%= o.visible ? '' : 'hidden-outfit' %>" data-id="<%= o.id %>">
+        <div class="drag" title="拖曳排序">⠿</div>
+        <div>
+          <% if (o.photos && o.photos.length) { %>
+            <img src="/photos/<%= o.photos[0] %>" alt="<%= o.titleEn %>" loading="lazy" />
+          <% } else { %>
+            <div style="width:80px; aspect-ratio:3/4; background:#efe5d7; display:flex; align-items:center; justify-content:center; color:#8a7e6e; font-size:10px;">NO PHOTO</div>
+          <% } %>
+        </div>
+        <div class="info">
+          <div class="num">№ <%= o.numLabel %></div>
+          <div class="title"><%= o.titleEn || '(未命名)' %></div>
+          <div class="zh"><%= o.titleZh %></div>
+          <% if (!o.visible) { %><div class="zh" style="color:#b04040; margin-top:4px;">⊘ 已隱藏</div><% } %>
+        </div>
+        <form method="POST" action="/admin/outfit/<%= o.id %>/toggle" style="margin:0;">
+          <button type="submit" class="btn-small" title="顯示 / 隱藏">
+            <%= o.visible ? '隱藏' : '顯示' %>
+          </button>
+        </form>
+        <a href="/admin/outfit/<%= o.id %>/edit" class="btn-small">編輯</a>
+        <form method="POST" action="/admin/outfit/<%= o.id %>/delete" style="margin:0;"
+              onsubmit="return confirm('確定要刪除 <%= o.numLabel %> 「<%= o.titleEn %>」？此動作無法復原。');">
+          <button type="submit" class="btn-small danger">刪除</button>
+        </form>
+      </div>
+    <% }) %>
+  </div>
+
+  <% if (!outfits.length) { %>
+    <div style="padding:60px 20px; text-align:center; background:#fff; border:1px dashed #cdbfae; color:#8a7e6e;">
+      目前沒有任何 outfit。
+      <a href="/admin/outfit/new" style="color:#7d3535; margin-left:10px;">+ 新增第一套</a>
+    </div>
+  <% } %>
+
+</div>
+
+<script>
+  // drag-and-drop reorder
+  (function () {
+    const list = document.getElementById('outfit-list');
+    if (!list) return;
+    let dragEl = null;
+
+    function saveOrder() {
+      const ids = [...list.querySelectorAll('.outfit-row')].map(el => el.dataset.id);
+      fetch('/admin/reorder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ order: ids }),
+      }).then(r => r.json()).then(() => {
+        // subtle flash
+        list.style.transition = 'background 0.3s';
+        list.style.background = '#f9f1e4';
+        setTimeout(() => { list.style.background = ''; }, 300);
+      });
+    }
+
+    list.querySelectorAll('.outfit-row').forEach(row => {
+      row.setAttribute('draggable', 'true');
+      row.addEventListener('dragstart', (e) => {
+        dragEl = row;
+        row.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      row.addEventListener('dragend', () => {
+        if (dragEl) dragEl.classList.remove('dragging');
+        dragEl = null;
+        saveOrder();
+      });
+      row.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (!dragEl || dragEl === row) return;
+        const rect = row.getBoundingClientRect();
+        const after = (e.clientY - rect.top) / rect.height > 0.5;
+        row.parentNode.insertBefore(dragEl, after ? row.nextSibling : row);
+      });
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<%- include('partials/_head', { pageTitle: 'KELLY LIN — 2026 S/S Collection', navActive: 'home' }) %>
+
+<section class="intro" id="about">
+  <div class="intro-header">
+    <div>
+      <div class="eyebrow">KELLY LIN · 2026 Collection</div>
+      <h1>The Woman Wardrobe</h1>
+    </div>
+    <div class="season">2026 &nbsp;·&nbsp; Spring / Summer</div>
+  </div>
+
+  <div class="intro-hero">
+    <div class="ed-card">
+      <div class="ed-oval">
+        <% const coverPhoto = outfits.length && outfits[0].photos.length ? outfits[0].photos[0] : '' %>
+        <% if (coverPhoto) { %><img src="/photos/<%= coverPhoto %>" alt="editorial cover" /><% } %>
+      </div>
+      <div class="quote">"Made for every mood"</div>
+      <h2>Kelly &amp; Her</h2>
+      <div class="meta">
+        <span>KELLY LIN</span>
+        <span>2026</span>
+        <span>S/S Collection</span>
+      </div>
+    </div>
+    <div class="intro-text">
+      <p>
+        從清晨通勤的俐落西裝、午後派對的蕾絲洋裝，<br/>
+        到夜色中的絲綢晚禮服 ——<br/>
+        Kelly Lin 的每一套作品，<br/>
+        都為不同時刻的妳量身而生。
+      </p>
+      <p style="margin-top: 18px; font-size:12px; letter-spacing:2px; opacity:0.8;">
+        ⟵ 點擊下方每一套服裝，查看更多細節
+      </p>
+      <div class="sign">— Kelly</div>
+    </div>
+  </div>
+</section>
+
+<section class="collection" id="collection">
+  <div class="section-title">
+    <div class="small">KELLY LIN · 2026 WARDROBE</div>
+    <h3><%= outfits.length %> outfits, <%= outfits.length %> moods</h3>
+    <p>點擊任一張卡片，進入該套服裝的專屬頁面</p>
+  </div>
+
+  <div class="outfits">
+    <% outfits.forEach((o, i) => { %>
+      <a href="/outfit/<%= o.id %>" class="outfit">
+        <div class="polaroid">
+          <div class="tape"></div>
+          <div class="num">№ <%= o.numLabel %></div>
+          <div class="img-wrap">
+            <% if (o.photos && o.photos.length) { %>
+              <img src="/photos/<%= o.photos[0] %>" alt="Outfit <%= o.numLabel %>" />
+            <% } %>
+          </div>
+          <div class="label">
+            <div class="en"><%= o.titleEn %></div>
+            <div class="zh"><%= o.titleZh %></div>
+          </div>
+        </div>
+        <div class="script-overlay">No.<%= parseInt(o.numLabel, 10) || (i+1) %></div>
+      </a>
+    <% }) %>
+  </div>
+</section>
+
+<section class="closing">
+  <h4>Kelly &amp; Her</h4>
+  <p>
+    每一套作品的細節與靈感<br/>
+    都收藏在各自的頁面裡，歡迎點開細細品味。<br/>
+    有興趣的款式，歡迎私訊詢問。
+  </p>
+  <a href="https://www.facebook.com/kai.li.lin.198419" class="btn" target="_blank">CONTACT ON FACEBOOK</a>
+</section>
+
+<%- include('partials/_footer') %>
