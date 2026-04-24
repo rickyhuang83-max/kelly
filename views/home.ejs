@@ -1,15 +1,5 @@
 <%- include('partials/_head', { pageTitle: 'KELLY LIN — 2026 S/S Collection', navActive: 'home' }) %>
 
-<% if (typeof hero !== 'undefined' && hero) { %>
-<section class="hero-banner">
-  <img src="/photos/<%= hero.name %>?v=<%= hero.mtime %>" alt="KELLY LIN" />
-  <div class="hero-overlay">
-    <div class="hero-brand">KELLY LIN</div>
-    <div class="hero-tag">2026 · SPRING / SUMMER</div>
-  </div>
-</section>
-<% } %>
-
 <section class="intro" id="about">
   <div class="intro-header">
     <div>
@@ -22,8 +12,15 @@
   <div class="intro-hero">
     <div class="ed-card">
       <div class="ed-oval">
-        <% const coverPhoto = outfits.length && outfits[0].photos.length ? outfits[0].photos[0] : '' %>
-        <% if (coverPhoto) { %><img src="/photos/<%= coverPhoto %>" alt="editorial cover" /><% } %>
+        <%
+          let coverSrc = '';
+          if (typeof hero !== 'undefined' && hero) {
+            coverSrc = '/photos/' + hero.name + '?v=' + hero.mtime;
+          } else if (outfits.length && outfits[0].photos.length) {
+            coverSrc = '/photos/' + outfits[0].photos[0];
+          }
+        %>
+        <% if (coverSrc) { %><img src="<%= coverSrc %>" alt="editorial cover" /><% } %>
       </div>
       <div class="quote">"Made for every mood"</div>
       <h2>Kelly &amp; Her</h2>
