@@ -93,10 +93,21 @@ app.use((req, res, next) => {
 });
 
 // ---------- public routes ----------
+function getHero() {
+  // look for hero.(jpg|jpeg|png|webp) in the photo dir
+  for (const ext of ['jpg', 'jpeg', 'png', 'webp']) {
+    const file = path.join(PHOTO_DIR, `hero.${ext}`);
+    if (fs.existsSync(file)) {
+      return { name: `hero.${ext}`, mtime: fs.statSync(file).mtimeMs | 0 };
+    }
+  }
+  return null;
+}
+
 app.get('/', (req, res) => {
   const { outfits } = loadData();
   const visible = outfits.filter(o => o.visible).sort((a, b) => a.order - b.order);
-  res.render('home', { outfits: visible });
+  res.render('home', { outfits: visible, hero: getHero() });
 });
 
 app.get('/lookbook', (req, res) => {
@@ -158,7 +169,11 @@ app.post('/admin/logout', (req, res) => {
 app.get('/admin/dashboard', requireAuth, (req, res) => {
   const { outfits } = loadData();
   outfits.sort((a, b) => a.order - b.order);
-  res.render('admin/dashboard', { outfits, flash: req.session.flash || null });
+  res.render('admin/dashboard', {
+    outfits,
+    flash: req.session.flash || null,
+    hero: getHero(),
+  });
   req.session.flash = null;
 });
 
@@ -259,6 +274,42 @@ const upload = multer({
     if (/^image\/(jpeg|png|webp)$/.test(file.mimetype)) return cb(null, true);
     cb(new Error('只接受 JPEG / PNG / WebP 圖片'));
   },
+});
+
+// ---------- admin: homepage hero image ----------
+const heroUpload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, PHOTO_DIR),
+    filename:    (req, file, cb) => {
+      // always overwrite as hero.<ext>; nuke any other hero.* first
+      const ext = path.extname(file.originalname).toLowerCase().replace('.', '') || 'jpg';
+      const safeExt = ['jpg','jpeg','png','webp'].includes(ext) ? ext : 'jpg';
+      for (const e of ['jpg','jpeg','png','webp']) {
+        const old = path.join(PHOTO_DIR, `hero.${e}`);
+        if (fs.existsSync(old)) { try { fs.unlinkSync(old); } catch {} }
+      }
+      cb(null, `hero.${safeExt}`);
+    },
+  }),
+  limits: { fileSize: 15 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (/^image\/(jpeg|png|webp)$/.test(file.mimetype)) return cb(null, true);
+    cb(new Error('只接受 JPEG / PNG / WebP 圖片'));
+  },
+});
+
+app.post('/admin/hero', requireAuth, heroUpload.single('hero'), (req, res) => {
+  req.session.flash = { success: '首頁主視覺已更新' };
+  res.redirect('/admin/dashboard');
+});
+
+app.post('/admin/hero/remove', requireAuth, (req, res) => {
+  for (const e of ['jpg','jpeg','png','webp']) {
+    const old = path.join(PHOTO_DIR, `hero.${e}`);
+    if (fs.existsSync(old)) { try { fs.unlinkSync(old); } catch {} }
+  }
+  req.session.flash = { success: '已移除主視覺' };
+  res.redirect('/admin/dashboard');
 });
 
 app.post('/admin/outfit/:id/photos', requireAuth, upload.array('photos', 20), async (req, res) => {
