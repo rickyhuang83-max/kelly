@@ -14,13 +14,22 @@
       <div class="ed-oval">
         <%
           let coverSrc = '';
-          if (typeof hero !== 'undefined' && hero) {
+          let coverVideoSrc = '';
+          if (typeof heroVideo !== 'undefined' && heroVideo) {
+            coverVideoSrc = '/photos/' + heroVideo.name + '?v=' + heroVideo.mtime;
+          } else if (typeof hero !== 'undefined' && hero) {
             coverSrc = '/photos/' + hero.name + '?v=' + hero.mtime;
+          } else if (outfits.length && outfits[0].video) {
+            coverVideoSrc = '/photos/' + outfits[0].video;
           } else if (outfits.length && outfits[0].photos.length) {
             coverSrc = '/photos/' + outfits[0].photos[0];
           }
         %>
-        <% if (coverSrc) { %><img src="<%= coverSrc %>" alt="editorial cover" /><% } %>
+        <% if (coverVideoSrc) { %>
+          <video src="<%= coverVideoSrc %>" autoplay muted loop playsinline preload="metadata"></video>
+        <% } else if (coverSrc) { %>
+          <img src="<%= coverSrc %>" alt="editorial cover" />
+        <% } %>
       </div>
       <div class="quote">"Made for every mood"</div>
       <h2>Kelly &amp; Her</h2>
@@ -59,7 +68,9 @@
           <div class="tape"></div>
           <div class="num">№ <%= o.numLabel %></div>
           <div class="img-wrap">
-            <% if (o.photos && o.photos.length) { %>
+            <% if (o.video) { %>
+              <video src="/photos/<%= o.video %>" autoplay muted loop playsinline preload="metadata"></video>
+            <% } else if (o.photos && o.photos.length) { %>
               <img src="/photos/<%= o.photos[0] %>" alt="Outfit <%= o.numLabel %>" />
             <% } %>
           </div>

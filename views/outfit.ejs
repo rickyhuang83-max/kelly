@@ -11,7 +11,14 @@
 </section>
 
 <section class="main">
-  <div class="gallery <%= outfit.photos.length === 1 ? 'single' : '' %>">
+  <% const totalCells = (outfit.video ? 1 : 0) + outfit.photos.length; %>
+  <div class="gallery <%= totalCells === 1 ? 'single' : '' %>">
+    <% if (outfit.video) { %>
+      <div class="cell video-cell">
+        <video src="/photos/<%= outfit.video %>" controls playsinline preload="metadata"></video>
+        <div class="cap"><%= outfit.titleEn %> · Video</div>
+      </div>
+    <% } %>
     <% outfit.photos.forEach((p, i) => { %>
       <div class="cell" onclick="openLightbox(<%= i %>)">
         <img src="/photos/<%= p %>" alt="<%= outfit.titleEn %> · <%= i+1 %>" loading="lazy" />

@@ -106,6 +106,44 @@
 
   <% if (!isNew) { %>
   <div class="edit-form" style="margin-top:28px;">
+    <h2>影片管理</h2>
+    <p style="font-size:12px; color:#8a7e6e; letter-spacing:1px; margin-bottom:14px; line-height:1.7;">
+      每套 outfit 可以放一支影片（可選）。<br/>
+      有上傳時：首頁卡片會自動靜音循環播放這支影片，outfit 詳細頁會把影片放在第一格。
+    </p>
+
+    <div style="display:flex; gap:22px; align-items:flex-start; flex-wrap:wrap; margin-bottom:18px;">
+      <div style="flex:0 0 200px;">
+        <% if (outfit.video) { %>
+          <video src="/photos/<%= outfit.video %>" controls muted playsinline preload="metadata"
+                 style="width:200px; height:280px; object-fit:cover; background:#000; border:1px solid #cdbfae;"></video>
+          <form method="POST" action="/admin/outfit/<%= outfit.id %>/video/remove" style="margin-top:8px;"
+                onsubmit="return confirm('移除這套 outfit 的影片？檔案會從伺服器刪除。');">
+            <button type="submit" class="btn-small danger">移除影片</button>
+          </form>
+          <div style="font-size:11px; color:#8a7e6e; margin-top:6px; word-break:break-all;">
+            <%= outfit.video %>
+          </div>
+        <% } else { %>
+          <div style="width:200px; height:280px; background:#efe5d7; display:flex; align-items:center; justify-content:center; color:#8a7e6e; font-size:12px; text-align:center; border:1px dashed #cdbfae;">
+            尚未上傳影片
+          </div>
+        <% } %>
+      </div>
+      <form method="POST" action="/admin/outfit/<%= outfit.id %>/video" enctype="multipart/form-data" style="flex:1; min-width:260px;">
+        <div style="font-size:12px; color:#5a5247; letter-spacing:1px; margin-bottom:10px; line-height:1.7;">
+          支援 MP4 / WebM / MOV，最大 50 MB。<br/>
+          建議直式（人像）比例，畫面短（10 ~ 30 秒）。<br/>
+          <span style="color:#8a7e6e;">（上傳後會覆蓋這套 outfit 的舊影片）</span>
+        </div>
+        <input type="file" name="video" accept="video/mp4,video/webm,video/quicktime" required />
+        <br/><br/>
+        <button type="submit"><%= outfit.video ? '更換影片' : '上傳影片' %></button>
+      </form>
+    </div>
+  </div>
+
+  <div class="edit-form" style="margin-top:28px;">
     <h2>照片管理</h2>
     <p style="font-size:12px; color:#8a7e6e; letter-spacing:1px; margin-bottom:14px;">
       拖曳下方縮圖可調整前台顯示順序，第一張會作為封面。

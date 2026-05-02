@@ -61,6 +61,40 @@
     </div>
   </div>
 
+  <div class="hero-admin" style="background:#fff; border:1px solid #e5dccb; padding:22px 26px; margin-bottom:24px;">
+    <h2 style="font-family:'Cormorant Garamond',serif; font-size:20px; letter-spacing:3px; margin-bottom:14px; color:#2a2724;">
+      首頁封面影片（取代封面照）
+    </h2>
+    <div style="display:flex; gap:22px; align-items:flex-start; flex-wrap:wrap;">
+      <div style="flex:0 0 180px;">
+        <% if (typeof heroVideo !== 'undefined' && heroVideo) { %>
+          <video src="/photos/<%= heroVideo.name %>?v=<%= heroVideo.mtime %>"
+                 muted loop autoplay playsinline preload="metadata"
+                 style="width:180px; height:240px; object-fit:cover; border:1px solid #cdbfae; background:#000;"></video>
+          <form method="POST" action="/admin/hero-video/remove" style="margin-top:8px;"
+                onsubmit="return confirm('確定要移除首頁封面影片？');">
+            <button type="submit" class="btn-small danger">移除封面影片</button>
+          </form>
+        <% } else { %>
+          <div style="width:180px; height:240px; background:#efe5d7; display:flex; align-items:center; justify-content:center; color:#8a7e6e; font-size:12px; text-align:center; border:1px dashed #cdbfae;">
+            尚未上傳<br/>封面影片
+          </div>
+        <% } %>
+      </div>
+      <form method="POST" action="/admin/hero-video" enctype="multipart/form-data" style="flex:1; min-width:260px;">
+        <div style="font-size:12px; color:#5a5247; letter-spacing:1px; margin-bottom:10px; line-height:1.7;">
+          有上傳封面影片時，會優先顯示在首頁橢圓框中（自動靜音播放、無限循環）。<br/>
+          建議直式（人像）比例，畫面短、檔案小（10 ~ 30 秒最理想）。<br/>
+          支援 MP4 / WebM / MOV，最大 50 MB。上傳後自動覆蓋舊影片。<br/>
+          <span style="color:#8a7e6e;">（移除影片後，會回到顯示封面照）</span>
+        </div>
+        <input type="file" name="hero" accept="video/mp4,video/webm,video/quicktime" required />
+        <br/><br/>
+        <button type="submit">上傳 / 更換封面影片</button>
+      </form>
+    </div>
+  </div>
+
   <p style="font-size:12px; color:#8a7e6e; letter-spacing:2px; margin-bottom:18px; text-transform:uppercase;">
     拖曳左側 ⠿ 可調整首頁與 Lookbook 的顯示順序 &nbsp;·&nbsp; 共 <%= outfits.length %> 套作品
   </p>

@@ -104,10 +104,21 @@ function getHero() {
   return null;
 }
 
+function getHeroVideo() {
+  // look for hero-video.(mp4|webm|mov) in the photo dir
+  for (const ext of ['mp4', 'webm', 'mov']) {
+    const file = path.join(PHOTO_DIR, `hero-video.${ext}`);
+    if (fs.existsSync(file)) {
+      return { name: `hero-video.${ext}`, mtime: fs.statSync(file).mtimeMs | 0 };
+    }
+  }
+  return null;
+}
+
 app.get('/', (req, res) => {
   const { outfits } = loadData();
   const visible = outfits.filter(o => o.visible).sort((a, b) => a.order - b.order);
-  res.render('home', { outfits: visible, hero: getHero() });
+  res.render('home', { outfits: visible, hero: getHero(), heroVideo: getHeroVideo() });
 });
 
 app.get('/lookbook', (req, res) => {
@@ -173,6 +184,7 @@ app.get('/admin/dashboard', requireAuth, (req, res) => {
     outfits,
     flash: req.session.flash || null,
     hero: getHero(),
+    heroVideo: getHeroVideo(),
   });
   req.session.flash = null;
 });
@@ -312,6 +324,106 @@ app.post('/admin/hero/remove', requireAuth, (req, res) => {
   res.redirect('/admin/dashboard');
 });
 
+// ---------- admin: video uploads ----------
+const VIDEO_MIME = /^video\/(mp4|quicktime|webm|x-m4v)$/;
+const VIDEO_EXT  = ['mp4', 'mov', 'webm'];
+const VIDEO_MAX  = 50 * 1024 * 1024; // 50MB per file
+
+function safeVideoExt(originalName) {
+  const ext = path.extname(originalName).toLowerCase().replace('.', '') || 'mp4';
+  return VIDEO_EXT.includes(ext) ? ext : 'mp4';
+}
+
+// hero video — overwrites hero-video.<ext>
+const heroVideoUpload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, PHOTO_DIR),
+    filename:    (req, file, cb) => {
+      for (const e of VIDEO_EXT) {
+        const old = path.join(PHOTO_DIR, `hero-video.${e}`);
+        if (fs.existsSync(old)) { try { fs.unlinkSync(old); } catch {} }
+      }
+      cb(null, `hero-video.${safeVideoExt(file.originalname)}`);
+    },
+  }),
+  limits: { fileSize: VIDEO_MAX },
+  fileFilter: (req, file, cb) => {
+    if (VIDEO_MIME.test(file.mimetype)) return cb(null, true);
+    cb(new Error('只接受 MP4 / WebM / MOV 影片'));
+  },
+});
+
+app.post('/admin/hero-video', requireAuth, (req, res) => {
+  heroVideoUpload.single('hero')(req, res, (err) => {
+    if (err) {
+      req.session.flash = { error: '影片上傳失敗：' + err.message };
+      return res.redirect('/admin/dashboard');
+    }
+    req.session.flash = { success: '首頁封面影片已更新' };
+    res.redirect('/admin/dashboard');
+  });
+});
+
+app.post('/admin/hero-video/remove', requireAuth, (req, res) => {
+  for (const e of VIDEO_EXT) {
+    const old = path.join(PHOTO_DIR, `hero-video.${e}`);
+    if (fs.existsSync(old)) { try { fs.unlinkSync(old); } catch {} }
+  }
+  req.session.flash = { success: '已移除封面影片' };
+  res.redirect('/admin/dashboard');
+});
+
+// per-outfit video — overwrites outfit-<id>-video.<ext>
+const outfitVideoUpload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, PHOTO_DIR),
+    filename:    (req, file, cb) => {
+      const id = String(req.params.id || '').replace(/[^a-zA-Z0-9._-]/g, '_');
+      for (const e of VIDEO_EXT) {
+        const old = path.join(PHOTO_DIR, `outfit-${id}-video.${e}`);
+        if (fs.existsSync(old)) { try { fs.unlinkSync(old); } catch {} }
+      }
+      cb(null, `outfit-${id}-video.${safeVideoExt(file.originalname)}`);
+    },
+  }),
+  limits: { fileSize: VIDEO_MAX },
+  fileFilter: (req, file, cb) => {
+    if (VIDEO_MIME.test(file.mimetype)) return cb(null, true);
+    cb(new Error('只接受 MP4 / WebM / MOV 影片'));
+  },
+});
+
+app.post('/admin/outfit/:id/video', requireAuth, (req, res) => {
+  outfitVideoUpload.single('video')(req, res, async (err) => {
+    if (err) {
+      req.session.flash = { error: '影片上傳失敗：' + err.message };
+      return res.redirect(`/admin/outfit/${req.params.id}/edit`);
+    }
+    if (req.file) {
+      const data = loadData();
+      const outfit = data.outfits.find(o => o.id === req.params.id);
+      if (outfit) {
+        outfit.video = req.file.filename;
+        await saveData(data);
+      }
+    }
+    res.redirect(`/admin/outfit/${req.params.id}/edit`);
+  });
+});
+
+app.post('/admin/outfit/:id/video/remove', requireAuth, async (req, res) => {
+  const data = loadData();
+  const outfit = data.outfits.find(o => o.id === req.params.id);
+  if (!outfit) return res.status(404).send('Not found');
+  if (outfit.video) {
+    const file = path.join(PHOTO_DIR, outfit.video);
+    if (fs.existsSync(file)) { try { fs.unlinkSync(file); } catch {} }
+    outfit.video = '';
+    await saveData(data);
+  }
+  res.redirect(`/admin/outfit/${req.params.id}/edit`);
+});
+
 app.post('/admin/outfit/:id/photos', requireAuth, upload.array('photos', 20), async (req, res) => {
   const data = loadData();
   const outfit = data.outfits.find(o => o.id === req.params.id);
@@ -373,6 +485,7 @@ function outfitFromForm(body, { id, base = {} }) {
     price:       String(body.price       ?? base.price       ?? ''),
     description: String(body.description ?? base.description ?? ''),
     photos:      Array.isArray(base.photos) ? base.photos : [],
+    video:       String(base.video ?? ''),
   };
 }
 
