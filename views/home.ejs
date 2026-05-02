@@ -26,7 +26,7 @@
           }
         %>
         <% if (coverVideoSrc) { %>
-          <video src="<%= coverVideoSrc %>" autoplay muted loop playsinline preload="metadata"></video>
+          <video class="hover-video" src="<%= coverVideoSrc %>" muted loop playsinline preload="metadata"></video>
         <% } else if (coverSrc) { %>
           <img src="<%= coverSrc %>" alt="editorial cover" />
         <% } %>
@@ -69,7 +69,7 @@
           <div class="num">№ <%= o.numLabel %></div>
           <div class="img-wrap">
             <% if (o.video) { %>
-              <video src="/photos/<%= o.video %>" autoplay muted loop playsinline preload="metadata"></video>
+              <video class="hover-video" src="/photos/<%= o.video %>" muted loop playsinline preload="metadata"></video>
             <% } else if (o.photos && o.photos.length) { %>
               <img src="/photos/<%= o.photos[0] %>" alt="Outfit <%= o.numLabel %>" />
             <% } %>
@@ -94,5 +94,44 @@
   </p>
   <a href="https://www.facebook.com/kai.li.lin.198419" class="btn" target="_blank">CONTACT ON FACEBOOK</a>
 </section>
+
+<script>
+  // Cards / oval videos: play only on mouse hover (desktop) or when scrolled into view (mobile)
+  (function () {
+    const videos = document.querySelectorAll('video.hover-video');
+    if (!videos.length) return;
+
+    // Make sure nothing is playing at start
+    videos.forEach(v => { try { v.pause(); v.currentTime = 0; } catch (e) {} });
+
+    const isTouch = window.matchMedia('(hover: none)').matches;
+
+    if (isTouch && 'IntersectionObserver' in window) {
+      // Mobile / touch: play when ≥60% visible, pause when scrolled away
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const v = entry.target;
+          if (entry.isIntersecting) {
+            v.play().catch(() => {});
+          } else {
+            v.pause();
+          }
+        });
+      }, { threshold: 0.6 });
+      videos.forEach(v => io.observe(v));
+    } else {
+      // Desktop: hover the card to play, leave to pause
+      videos.forEach(v => {
+        const target =
+          v.closest('.outfit') ||   // polaroid card
+          v.closest('.ed-card') ||  // hero oval card
+          v.parentElement;
+        if (!target) return;
+        target.addEventListener('mouseenter', () => v.play().catch(() => {}));
+        target.addEventListener('mouseleave', () => v.pause());
+      });
+    }
+  })();
+</script>
 
 <%- include('partials/_footer') %>
