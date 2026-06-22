@@ -52,9 +52,22 @@
     <div class="label">款式說明 / Description</div>
     <div class="value long"><%= outfit.description %></div>
 
-    <a href="https://www.facebook.com/kai.li.lin.198419" target="_blank" class="contact-btn">私訊詢問這件</a>
+    <a href="https://www.facebook.com/kai.li.lin.198419" target="_blank" class="contact-btn"
+       onclick="if(window.fbq){fbq('track','Contact',{content_name:'<%= outfit.titleEn %>',content_ids:['<%= outfit.id %>']});}">私訊詢問這件</a>
   </aside>
 </section>
+
+<!-- Meta Pixel: ViewContent — fires when this outfit page is opened -->
+<script>
+  if (window.fbq) {
+    fbq('track', 'ViewContent', {
+      content_type: 'product',
+      content_ids: ['<%= outfit.id %>'],
+      content_name: '<%= outfit.titleEn %>',
+      content_category: '<%= outfit.style || outfit.titleZh %>'
+    });
+  }
+</script>
 
 <div class="back-bar">
   <a href="/">← 回到全部作品</a>
