@@ -134,7 +134,8 @@ app.get('/outfit/:id', (req, res) => {
   if (idx < 0) return res.status(404).send('Not found');
   const prev = visible[(idx - 1 + visible.length) % visible.length];
   const next = visible[(idx + 1) % visible.length];
-  res.render('outfit', { outfit: visible[idx], prev, next });
+  const siteOrigin = `${req.protocol}://${req.get('host')}`;
+  res.render('outfit', { outfit: visible[idx], prev, next, siteOrigin });
 });
 
 // serve photos from the volume

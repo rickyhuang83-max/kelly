@@ -30,12 +30,17 @@
   <aside class="desc-panel">
     <%
       const lineOfficialId = '@743hawgb';
+      const firstPhoto = Array.isArray(outfit.photos) && outfit.photos.length ? outfit.photos[0] : '';
+      const firstPhotoUrl = firstPhoto && typeof siteOrigin !== 'undefined'
+        ? `${siteOrigin}/photos/${encodeURIComponent(firstPhoto)}`
+        : '';
       const lineOrderMessage = [
         '您好，我要直接訂購：',
         `款式：${outfit.titleEn || outfit.style || outfit.titleZh || '未填寫'}`,
         `編號：${outfit.itemNo || '未填寫'}`,
         `尺寸：${outfit.size || '未填寫'}`,
-        `價格：${outfit.price || '未填寫'}`
+        `價格：${outfit.price || '未填寫'}`,
+        `圖片：${firstPhotoUrl || '未提供'}`
       ].join('\n');
       const lineOrderUrl = `https://line.me/R/oaMessage/${encodeURIComponent(lineOfficialId)}/?${encodeURIComponent(lineOrderMessage)}`;
     %>
