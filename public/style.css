@@ -115,6 +115,8 @@ img { display: block; max-width: 100%; }
 .desc-panel .value.long { min-height: 110px; }
 .contact-btn { display: inline-block; margin-top: 24px; padding: 12px 28px; border: 1px solid #2a2724; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; text-align: center; transition: all .25s; }
 .contact-btn:hover { background: #2a2724; color: #f4ece1; }
+.order-btn { border-color: #06c755; background: #06c755; color: #fff; }
+.order-btn:hover { background: #04a947; border-color: #04a947; color: #fff; }
 
 .back-bar { display: flex; justify-content: space-between; align-items: center; padding: 40px 8% 80px; border-top: 1px solid #cdbfae; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; }
 .back-bar a { transition: opacity .2s; }

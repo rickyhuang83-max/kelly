@@ -28,6 +28,17 @@
   </div>
 
   <aside class="desc-panel">
+    <%
+      const lineOfficialId = '@743hawgb';
+      const lineOrderMessage = [
+        '您好，我要直接訂購：',
+        `款式：${outfit.titleEn || outfit.style || outfit.titleZh || '未填寫'}`,
+        `編號：${outfit.itemNo || '未填寫'}`,
+        `尺寸：${outfit.size || '未填寫'}`,
+        `價格：${outfit.price || '未填寫'}`
+      ].join('\n');
+      const lineOrderUrl = `https://line.me/R/oaMessage/${encodeURIComponent(lineOfficialId)}/?${encodeURIComponent(lineOrderMessage)}`;
+    %>
     <div class="eyebrow">Item details</div>
     <h2><%= outfit.titleEn %></h2>
     <div class="divider"></div>
@@ -52,8 +63,8 @@
     <div class="label">款式說明 / Description</div>
     <div class="value long"><%= outfit.description %></div>
 
-    <a href="https://www.facebook.com/kai.li.lin.198419" target="_blank" class="contact-btn"
-       onclick="if(window.fbq){fbq('track','Contact',{content_name:'<%= outfit.titleEn %>',content_ids:['<%= outfit.id %>']});}">私訊詢問這件</a>
+    <a href="<%= lineOrderUrl %>" target="_blank" rel="noopener" class="contact-btn order-btn"
+       onclick="if(window.fbq){fbq('track','Contact',{content_name:'<%= outfit.titleEn %>',content_ids:['<%= outfit.id %>']});}">直接訂購</a>
   </aside>
 </section>
 
